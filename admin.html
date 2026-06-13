@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Link Generator</title>
+    <title>Admin Link Generator with Random Slug</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome untuk Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-100 font-sans text-slate-800">
 
     <div class="flex h-screen overflow-hidden">
         
+        <!-- SIDEBAR -->
         <div class="w-64 bg-slate-900 text-white flex flex-col hidden md:flex">
             <div class="p-5 text-xl font-bold tracking-wider border-b border-slate-800 flex items-center gap-2">
                 <i class="fa-solid fa-link text-blue-500"></i> AdminPanel
             </div>
             <nav class="flex-1 p-4 space-y-2">
                 <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-medium transition">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Link Generator
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Slug Generator
                 </a>
                 <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
                     <i class="fa-solid fa-chart-simple"></i> Analytics
@@ -27,64 +30,69 @@
                 </a>
             </nav>
             <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
-                v1.0.0 &copy; 2026
+                v1.1.0 &copy; 2026
             </div>
         </div>
 
+        <!-- MAIN CONTENT AREA -->
         <div class="flex-1 flex flex-col overflow-y-auto">
             
+            <!-- NAVBAR -->
             <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-                <h1 class="text-xl font-bold text-slate-800">Link Generator Tool</h1>
+                <h1 class="text-xl font-bold text-slate-800">Random Slug Generator</h1>
                 <div class="flex items-center gap-3">
                     <span class="text-sm font-medium text-slate-600">Admin Mode</span>
                     <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">A</div>
                 </div>
             </header>
 
+            <!-- CONTENT -->
             <main class="p-6 max-w-4xl w-full mx-auto space-y-6">
                 
+                <!-- GENERATOR FORM CARD -->
                 <div class="bg-white rounded-xl shadow-xs border border-slate-200 p-6">
                     <h2 class="text-lg font-semibold mb-4 text-slate-700 flex items-center gap-2">
-                        <i class="fa-solid fa-plus-circle text-blue-500"></i> Buat Link Baru
+                        <i class="fa-solid fa-plus-circle text-blue-500"></i> Buat Link & Slug Acak
                     </h2>
                     
                     <div class="space-y-4">
+                        <!-- Input URL Domain Utama -->
                         <div>
-                            <label class="block text-sm font-medium text-slate-600 mb-1">URL Tujuan (Destination URL)</label>
-                            <input type="url" id="targetUrl" placeholder="https://example.com/produk" 
-                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Domain Anda / Base URL</label>
+                            <input type="url" id="baseUrl" value="https://situsku.com" placeholder="https://situsku.com" 
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <p class="text-xs text-slate-400 mt-1">Domain yang akan dipasangkan dengan slug acak.</p>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-600 mb-1">Campaign Source (e.g. facebook, newsletter)</label>
-                                <input type="text" id="utmSource" placeholder="facebook" 
-                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-600 mb-1">Campaign Medium (e.g. cpc, banner)</label>
-                                <input type="text" id="utmMedium" placeholder="cpc" 
-                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
+                        <!-- Opsi Panjang Slug -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Panjang Karakter Slug</label>
+                            <select id="slugLength" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="5">5 Karakter (Contoh: x7K9a)</option>
+                                <option value="7" selected>7 Karakter (Contoh: bR4m9Zx)</option>
+                                <option value="10">10 Karakter (Contoh: pQ2wE4rT6y)</option>
+                            </select>
                         </div>
 
-                        <button onclick="generateLink()" 
+                        <!-- Tombol Aksi -->
+                        <button onclick="generateSlugLink()" 
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-gear"></i> Generate Link
+                            <i class="fa-solid fa-shuffle"></i> Acak & Generate Link
                         </button>
                     </div>
                 </div>
 
-                <div id="resultCard" class="bg-white rounded-xl shadow-xs border border-slate-200 p-6 hidden transition-all">
+                <!-- RESULT CARD -->
+                <div id="resultCard" class="bg-white rounded-xl shadow-xs border border-slate-200 p-6 hidden">
                     <h2 class="text-lg font-semibold mb-3 text-slate-700 flex items-center gap-2">
-                        <i class="fa-solid fa-check-circle text-green-500"></i> Link Berhasil Dibuat
+                        <i class="fa-solid fa-check-circle text-green-500"></i> Link Hasil Acak
                     </h2>
                     
                     <div class="flex flex-col sm:flex-row gap-2">
                         <input type="text" id="outputUrl" readonly 
-                            class="flex-1 px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-600 font-mono text-sm focus:outline-none">
+                            class="flex-1 px-4 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-mono text-sm focus:outline-none tracking-wide font-bold">
                         <button onclick="copyToClipboard()" 
-                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer">
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer min-w-[100px]">
                             <i class="fa-solid fa-copy"></i> <span id="copyBtnText">Salin</span>
                         </button>
                     </div>
@@ -94,42 +102,64 @@
         </div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        function generateLink() {
-            const targetUrl = document.getElementById('targetUrl').value.trim();
-            const source = document.getElementById('utmSource').value.trim();
-            const medium = document.getElementById('utmMedium').value.trim();
+        // Fungsi membuat string acak (Slug)
+        function makeRandomSlug(length) {
+            let result = '';
+            // Karakter kombinasi (Huruf besar, kecil, dan angka)
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234506789';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
 
-            if (!targetUrl) {
-                alert('Harap masukkan URL Tujuan terlebih dahulu!');
+        function generateSlugLink() {
+            let baseUrl = document.getElementById('baseUrl').value.trim();
+            const slugLength = parseInt(document.getElementById('slugLength').value);
+
+            if (!baseUrl) {
+                alert('Harap masukkan Base URL terlebih dahulu!');
                 return;
             }
 
-            try {
-                // Membuat objek URL dasar
-                let url = new URL(targetUrl);
-                
-                // Menambahkan parameter UTM jika diisi
-                if (source) url.searchParams.append('utm_source', source);
-                if (medium) url.searchParams.append('utm_medium', medium);
+            // Memastikan format URL benar (menambahkan protokol jika tidak ada)
+            if (!/^https?:\/\//i.test(baseUrl)) {
+                baseUrl = 'https://' + baseUrl;
+                document.getElementById('baseUrl').value = baseUrl;
+            }
 
-                // Menampilkan hasil
-                document.getElementById('outputUrl').value = url.toString();
+            try {
+                // Merapikan garis miring (slash) di akhir URL sebelum digabung slug
+                if (!baseUrl.endsWith('/')) {
+                    baseUrl += '/';
+                }
+
+                // Buat slug acak
+                const randomSlug = makeRandomSlug(slugLength);
                 
-                // Reset tombol salin
+                // Gabungkan Base URL dengan Slug
+                const finalUrl = baseUrl + randomSlug;
+
+                // Tampilkan hasil ke input field
+                document.getElementById('outputUrl').value = finalUrl;
+                
+                // Reset text tombol copy
                 document.getElementById('copyBtnText').innerText = "Salin";
                 
-                // Memunculkan card hasil
+                // Tampilkan card hasil
                 document.getElementById('resultCard').classList.remove('hidden');
             } catch (e) {
-                alert('Format URL tidak valid. Pastikan menggunakan http:// atau https://');
+                alert('Terjadi kesalahan. Pastikan penulisan URL sudah benar.');
             }
         }
 
         function copyToClipboard() {
             const outputUrl = document.getElementById('outputUrl');
             outputUrl.select();
-            outputUrl.setSelectionRange(0, 99999); // Untuk perangkat mobile
+            outputUrl.setSelectionRange(0, 99999); 
 
             navigator.clipboard.writeText(outputUrl.value).then(() => {
                 const btnText = document.getElementById('copyBtnText');
