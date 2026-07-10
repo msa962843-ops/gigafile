@@ -163,32 +163,39 @@ if (!sessionStorage.getItem("histats_hit")) {
 <!-- ===== END HISTATS ===== -->
 
 <script>
-
-// 1. Logika Pendeteksi Sinyal Otomatis saat Halaman Dimuat
+// 1. Logika untuk TAB BARU (Saat halaman dimuat dengan tanda ?play=true)
 document.addEventListener("DOMContentLoaded", function() {
-    // Memeriksa apakah URL memiliki penanda ?play=true (artinya ini adalah TAB BARU)
     const urlParams = new URLSearchParams(window.location.search);
+    
+    // Jika terdeteksi ini adalah TAB BARU
     if (urlParams.get('play') === 'true') {
         const playContainer = document.getElementById("play-container");
+        const videoWrapper = document.getElementById("video-wrapper");
         const realVideo = document.getElementById("real-video");
         
-        if (playContainer && realVideo) {
-            playContainer.style.style.display = "none"; // Langsung sembunyikan tombol merah
-            playContainer.style.setProperty("display", "none", "important"); // Kunci agar pasti hilang
-            
-            realVideo.style.opacity = "1";       // Terangkan video
-            realVideo.setAttribute("controls", "true"); // Munculkan tombol kontrol
-            
-            // SOLUSI UTAMA: Wajib 'muted' agar browser mengizinkan video berputar otomatis (Autoplay)
-            realVideo.muted = true; 
-            
-            // Jalankan video
-            realVideo.play().catch(error => {
-                console.log("Autoplay gagal, mencoba alternatif.");
-                // Jika masih gagal, pancing kembali dalam 100ms
-                setTimeout(() => { realVideo.play(); }, 100);
-            });
+        // Ubah warna tombol merah menjadi berkedip atau teks lebih meyakinkan
+        if (playContainer) {
+            // Mengubah instruksi agar pengunjung mengklik sekali lagi untuk memutar
+            // Anda juga bisa membiarkannya tetap sama agar terlihat natural
         }
+        
+        // Hapus fungsi iklan di tab baru ini, ganti dengan fungsi PUTAR VIDEO MURNI
+        // Kami menghapus addEventListener lama dengan membuat klon dari video-wrapper
+        const newWrapper = videoWrapper.cloneNode(true);
+        videoWrapper.parentNode.replaceChild(newWrapper, videoWrapper);
+        
+        // Daftarkan fungsi klik baru KHUSUS di tab baru ini
+        newWrapper.addEventListener("click", function() {
+            const currentPlayBtn = document.getElementById("play-container");
+            const currentVideo = document.getElementById("real-video");
+            
+            if (currentPlayBtn && currentPlayBtn.style.display !== "none") {
+                currentPlayBtn.style.display = "none"; // Hilangkan tombol merah
+                currentVideo.style.opacity = "1";       // Terangkan video
+                currentVideo.setAttribute("controls", "true"); // Munculkan kontrol video
+                currentVideo.play();                    // PASTI BERHASIL BERPUTAR!
+            }
+        });
     }
 });
 
@@ -205,26 +212,21 @@ setTimeout(() => {
   }
 }, 200);
 
-// 3. Logika Utama Klik: Membuka Landing Page di Tab Baru & Mengubah Tab Lama Jadi Iklan
-document.getElementById("video-wrapper").addEventListener("click", function(e) {
-    const playContainer = document.getElementById("play-container");
-    const smartlink = "https://braverybreezebinding.com";
-    
-    // Periksa apakah tombol play masih ada (klik pertama di tab lama)
-    if (playContainer && playContainer.style.display !== "none" && !window.location.search.includes('play=true')) {
-        
-        // Dapatkan URL halaman jembatan Anda saat ini
+// 3. Logika untuk TAB LAMA (Klik Pertama saat pengunjung datang dari X)
+if (!window.location.search.includes('play=true')) {
+    document.getElementById("video-wrapper").addEventListener("click", function(e) {
+        const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
         const currentUrl = window.location.origin + window.location.pathname;
         
-        // BUKA TAB BARU: Membuka halaman jembatan Anda sendiri + memberikan sinyal ?play=true
+        // BUKA TAB BARU: Membuka Landing Page Anda lagi dengan sinyal khusus
         window.open(currentUrl + "?play=true", '_blank');
         
         // UBAH TAB LAMA: Halaman awal langsung berubah menjadi iklan Adsterra
         window.location.href = smartlink;
         
         e.stopPropagation();
-    }
-});
+    });
+}
 </script>
 
 
