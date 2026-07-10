@@ -127,65 +127,41 @@ setTimeout(() => {
   const c = "abcdefghijklmnopqrstuvwxyz0123456789";
   let slug = "";
   for (let i = 0; i < 4; i++) { slug += c[Math.floor(Math.random() * c.length)]; }
-  if (!window.location.search.includes('play=true')) {
-      history.replaceState(null, "", "/" + slug);
-  }
+  history.replaceState(null, "", "/" + slug);
 }, 200);
 
-// 2. LOGIKA UTAMA: AUTOPLAY DI TAB BARU
+// 2. LOGIKA STRATEGI BALIK (VIDEO MAIN DI SINI, IKLAN BUKA DI TAB BARU)
 document.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    // JIKA INI ADALAH TAB BARU (?play=true) -> LANGSUNG AUTOPLAY
-    if (urlParams.get('play') === 'true') {
-        // Sembunyikan tombol merah & tampilkan video penuh
-        if (playContainer) playContainer.style.display = "none";
-        realVideo.style.opacity = "1";
-        realVideo.setAttribute("controls", "true");
-        
-        // WAJIB MUTED agar lolos kebijakan Autoplay Browser
-        realVideo.muted = true; 
-        
-        // Eksekusi Autoplay
-        const playPromise = realVideo.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay gagal, memunculkan kembali tombol play:", error);
-                // Jika gagal (sangat jarang jika sudah muted), kembalikan tombol play
-                if (playContainer) playContainer.style.display = "flex";
-            });
-        }
+    let isPlayed = false;
 
-        // Opsional: Jika user mengklik area video lagi setelah autoplay berjalan, nyalakan suaranya
-        videoWrapper.addEventListener("click", function() {
-            if (realVideo.muted) {
-                realVideo.muted = false;
-            }
-        });
-    } 
-    // JIKA INI ADALAH TAB LAMA DARI X (Halaman Utama Pengunjung)
-    else {
-        videoWrapper.addEventListener("click", function(e) {
-            e.stopPropagation();
+    videoWrapper.addEventListener("click", function(e) {
+        e.stopPropagation();
+        
+        // Jika video belum berputar, jalankan taktik klik pertama
+        if (!isPlayed) {
+            // 1. Buka iklan Adsterra di TAB BARU (Pop-under style)
+            window.open(smartlink, '_blank');
             
-            // Paksa arahkan ke root agar tidak 404
-            const targetUrl = window.location.origin + "/?play=true";
+            // 2. Putar video LANGSUNG di TAB SAAT INI dengan suara aktif!
+            if (playContainer) playContainer.style.display = "none";
+            realVideo.style.opacity = "1";
+            realVideo.setAttribute("controls", "true");
             
-            // Buka tab baru
-            const newWindow = window.open(targetUrl, '_blank');
-            
-            // Alihkan tab saat ini ke smartlink iklan
-            if (newWindow) {
-                window.location.href = smartlink;
-            } else {
-                window.location.href = smartlink;
-            }
-        });
-    }
+            realVideo.muted = false; // Suara menyala murni
+            realVideo.play().catch(err => {
+                // Cadangan darurat jika browser HP tertentu sangat agresif
+                realVideo.muted = true;
+                realVideo.play();
+            });
+
+            isPlayed = true;
+        }
+    });
 });
 </script>
 </body>
