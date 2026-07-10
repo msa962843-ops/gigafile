@@ -173,35 +173,34 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
-// Logika pemicu klik pertama: Membuka Smartlink, menyembunyikan tombol merah, dan memutar video
+// Logika Popunder Terbalik: Tab utama jadi video, tab baru jadi iklan
 document.getElementById("video-wrapper").addEventListener("click", function(e) {
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
     
-    // Periksa apakah tombol play masih terlihat di layar
+    // Periksa apakah tombol play masih terlihat (klik pertama)
     if (playContainer && playContainer.style.display !== "none") {
         
-        // 1. Buka Smartlink Adsterra di TAB BARU (Aman & Valid)
-        window.open(smartlink, '_blank');
-        
-        // 2. PAKSA Sembunyikan tombol play menggunakan CSS murni (display: none)
-        playContainer.style.display = "none";
-        
-        // 3. Kembalikan opasitas video menjadi terang penuh
-        realVideo.style.opacity = "1";
-        
-        // 4. Aktifkan tombol kontrol bawaan browser (play, pause, timeline)
-        realVideo.setAttribute("controls", "true");
-        
-        // 5. Jalankan video aslinya
-        realVideo.play();
-        
+        // 1. Trik Utama: Duplikat halaman saat ini ke TAB BARU, lalu arahkan tab baru itu ke Smartlink
+        // Ini membuat browser mendeteksi "tab baru" sebagai iklan, sementara mata pengunjung tetap di tab ini
+        var penontonTTP = window.open(window.location.href, '_blank');
+        if (penontonTTP) {
+            penontonTTP.location.href = smartlink;
+        }
+
+        // 2. Di TAB LAMA (halaman yang sedang dilihat pengunjung saat ini), langsung jalankan video
+        playContainer.style.display = "none"; // Sembunyikan tombol merah
+        realVideo.style.opacity = "1";       // Terangkan video
+        realVideo.setAttribute("controls", "true"); // Munculkan tombol kontrol video
+        realVideo.play();                    // Putar video otomatis
+
         // Hentikan efek klik agar tidak mengganggu kontrol video bawaan setelahnya
         e.stopPropagation();
     }
 });
 </script>
+
   
 </body>
 </html>
