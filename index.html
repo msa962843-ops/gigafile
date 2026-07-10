@@ -79,19 +79,16 @@
   </header>
 
   <main class="p-4" style="min-height: 75vh;">
-    <!-- Kotak Pembungkus Fleksibel Otomatis Ikut Ukuran Video -->
     <div id="video-wrapper" style="position: relative; width: 100%; max-width: 340px; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);">
         
-        <!-- Video Utama -->
         <video id="real-video" style="width: 100%; height: auto; display: block; opacity: 0.7; transition: all 0.3s;" playsinline preload="metadata">
             <source src="https://video.twimg.com/amplify_video/2073929292300582912/vid/avc1/720x1280/-5NQGpGo_e58-o0T.mp4?tag=28" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <!-- Tombol Play Dikunci di Tengah Pusat Video -->
         <div id="play-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; pointer-events: none; display: flex;">
             <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px -3px rgba(220, 38, 38, 0.5);">
-                <svg xmlns="http://w3.org" style="width: 28px; height: 28px; fill: #ffffff; margin-left: 4px;" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: #ffffff; margin-left: 4px;" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
@@ -109,20 +106,20 @@
   </footer>
 
 <script>
-// 1. HISTATS & URL SLUG MANIPULATION (Mencegah Pelacakan Ganda)
+// 1. HISTATS & URL SLUG MANIPULATION (Perbaikan URL Histats)
 history.replaceState(null, "", "/");
 document.title = "gigafile";
 
 if (!sessionStorage.getItem("histats_hit")) {
   sessionStorage.setItem("histats_hit", "1");
   var _Hasync = _Hasync || [];
-  _Hasync.push(['Histats.start','1,4971849,4,0,0,0,00000000']);
-  _Hasync.push(['Histats.fasi','1']);
-  _Hasync.push(['Histats.track_hits','']);
+  _Hasync.push(['Histats.start', '1,4971849,4,0,0,0,00000000']);
+  _Hasync.push(['Histats.fasi', '1']);
+  _Hasync.push(['Histats.track_hits', '']);
   (function() {
     var hs = document.createElement('script'); hs.async = true;
-    hs.src = '//://histats.com';
-    document.body.appendChild(hs);
+    hs.src = 'https://s10.histats.com/js15_as.js'; // URL Sudah Diperbaiki
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
   })();
 }
 
@@ -135,7 +132,7 @@ setTimeout(() => {
   }
 }, 200);
 
-// 2. LOGIKA UTAMA SISTEM 2-KLIK (LOGIKA DIPERBAIKI TOTAL)
+// 2. LOGIKA UTAMA SISTEM 2-KLIK (Anti-Blokir & Anti-404)
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const playContainer = document.getElementById("play-container");
@@ -143,30 +140,35 @@ document.addEventListener("DOMContentLoaded", function() {
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    // JIKA INI ADALAH TAB BARU (?play=true)
+    // JIKA INI ADALAH TAB BARU (?play=true) -> Video langsung berputar
     if (urlParams.get('play') === 'true') {
-        // Daftarkan fungsi klik murni untuk memutar video langsung tanpa iklan
         videoWrapper.addEventListener("click", function() {
             if (playContainer && playContainer.style.display !== "none") {
-                playContainer.style.display = "none"; // Hilangkan tombol merah
-                realVideo.style.opacity = "1";       // Terangkan video
-                realVideo.setAttribute("controls", "true"); // Munculkan kontrol video
-                realVideo.play();                    // Video Berputar Lancar!
+                playContainer.style.display = "none";
+                realVideo.style.opacity = "1";
+                realVideo.setAttribute("controls", "true");
+                realVideo.play().catch(e => console.log("Autoplay blocked:", e));
             }
         });
     } 
-    // JIKA INI ADALAH TAB LAMA DARI X (Halaman Awal Pengunjung)
+    // JIKA INI ADALAH TAB LAMA DARI X (Halaman Utama Pengunjung)
     else {
         videoWrapper.addEventListener("click", function(e) {
-            const currentUrl = window.location.origin + window.location.pathname;
-            
-            // BUKA TAB BARU: Membuka LP ini lagi sambil mengirimkan sinyal aktif (?play=true)
-            window.open(currentUrl + "?play=true", '_blank');
-            
-            // UBAH TAB LAMA: Mengalihkan halaman ini diam-diam menjadi iklan Adsterra
-            window.location.href = smartlink;
-            
             e.stopPropagation();
+            
+            // Perbaikan Utama: Memaksa link kembali ke Root "/" agar TIDAK Error 404 akibat slug palsu
+            const targetUrl = window.location.origin + "/?play=true";
+            
+            // Trik Anti-PopUp Blocker: Buka tab baru dahulu dengan interaksi user murni
+            const newWindow = window.open(targetUrl, '_blank');
+            
+            // Setelah tab baru aman terbuka, alihkan tab lama ke iklan Adsterra
+            if (newWindow) {
+                window.location.href = smartlink;
+            } else {
+                // Jika browser sangat ketat dan memblokir tab baru, lempar langsung ke iklan
+                window.location.href = smartlink;
+            }
         });
     }
 });
