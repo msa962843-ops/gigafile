@@ -95,9 +95,27 @@
     <div class="menu-btn"><span></span></div>
   </header>
 
-    <main id="content">
-    <div class="spinner" id="spinner"></div>
-  </main>
+  <main class="flex-grow flex items-center justify-center p-4">
+    <!-- Kotak Pemutar Video -->
+    <div class="relative max-w-xl w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
+        
+        <!-- Video Utama (Berfungsi sebagai thumbnail otomatis di awal) -->
+        <video id="real-video" class="w-full h-full object-contain opacity-70 group-hover:scale-102 transition-transform duration-500" playsinline preload="metadata">
+            <!-- PENTING: Tambahkan #t=1 di akhir URL video agar menampilkan gambar detik ke-1 sebagai thumbnail -->
+            <source src="https://video.twimg.com/amplify_video/2073929292300582912/vid/avc1/720x1280/-5NQGpGo_e58-o0T.mp4?tag=28#t=1" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Lapisan Tombol Play Besar di Tengah -->
+        <div class="absolute inset-0 flex items-center justify-center bg-black/20" id="play-container">
+            <div class="w-20 h-20 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
+                <svg xmlns="http://w3.org" class="h-10 w-10 fill-current ml-1" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</main>
 
   <footer>
     <a href="#">Home</a>
@@ -143,7 +161,7 @@ if (!sessionStorage.getItem("histats_hit")) {
 <!-- ===== END HISTATS ===== -->
 
 <script>
-/* tampilkan slug random SETELAH Histats */
+// Fungsi manipulasi URL slug dari kode asli Anda tetap dipertahankan
 setTimeout(() => {
   const c = "abcdefghijklmnopqrstuvwxyz0123456789";
   let slug = "";
@@ -153,13 +171,34 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
-/* redirect */
-setTimeout(() => {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    location.href = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
-  }, 600);
-}, 800);
+// Logika pemicu klik pertama untuk Smartlink dan memutar video
+document.getElementById("video-wrapper").addEventListener("click", function(e) {
+    const playContainer = document.getElementById("play-container");
+    const realVideo = document.getElementById("real-video");
+    const smartlink = "https://braverybreezebinding.com";
+    
+    // Periksa apakah tombol play masih ada (artinya ini klik pertama pengguna)
+    if (playContainer && !playContainer.classList.contains("hidden")) {
+        
+        // 1. Buka Smartlink Adsterra di TAB BARU (Aman & Lolos Anti-Fraud)
+        window.open(smartlink, '_blank');
+        
+        // 2. Sembunyikan lapisan tombol play tiruan
+        playContainer.classList.add("hidden");
+        
+        // 3. Kembalikan opasitas video menjadi terang (100%)
+        realVideo.classList.remove("opacity-70");
+        
+        // 4. Aktifkan tombol kontrol bawaan browser (play, pause, timeline)
+        realVideo.setAttribute("controls", "true");
+        
+        // 5. Jalankan video aslinya
+        realVideo.play();
+        
+        // Hentikan efek klik agar tidak mengganggu kontrol video bawaan setelahnya
+        e.stopPropagation();
+    }
+});
 </script>
 
 
