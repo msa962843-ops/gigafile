@@ -96,20 +96,20 @@
     <div class="menu-btn"><span></span></div>
   </header>
 
-<main class="flex-grow flex items-center justify-center p-4" style="display: flex; justify-content: center; align-items: center;">
+<main class="flex-grow flex items-center justify-center p-4" style="display: flex; justify-content: center; align-items: center; min-height: 75vh;">
     
-    <!-- Kotak Pemutar Video (Ukuran dikunci maksimal lebar 340px agar pas di HP kecil) -->
-    <div id="video-wrapper" class="group" style="position: relative; width: 100%; max-width: 340px; aspect-ratio: 16 / 9; bg-color: #000000; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+    <!-- Kotak Pembungkus Fleksibel (Ukuran otomatis mengikuti bentuk video di dalamnya) -->
+    <div id="video-wrapper" class="group" style="position: relative; width: 100%; max-width: 340px; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);">
         
-        <!-- Video Utama -->
-        <video id="real-video" style="width: 100%; height: 100%; object-fit: contain; opacity: 0.7; transition: transform 0.5s;" playsinline preload="metadata">
+        <!-- Video Utama (Otomatis menentukan apakah halaman jadi Portrait atau Landscape) -->
+        <video id="real-video" style="width: 100%; height: auto; display: block; opacity: 0.7; transition: all 0.3s;" playsinline preload="metadata">
             <source src="https://video.twimg.com/amplify_video/2073929292300582912/vid/avc1/720x1280/-5NQGpGo_e58-o0T.mp4?tag=28#t=1" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <!-- Lapisan Tombol Play (DIKUNCI PASTI DI TENGAH VIDEO) -->
+        <!-- Tombol Play (DIKUNCI PASTI DI TENGAH PUSAT VIDEO APAPUN BENTUK VIDEONYA) -->
         <div id="play-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; pointer-events: none;">
-            <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4); transition: all 0.3s;">
+            <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px -3px rgba(220, 38, 38, 0.5);">
                 <svg xmlns="http://w3.org" style="width: 28px; height: 28px; fill: #ffffff; margin-left: 4px;" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
@@ -173,23 +173,23 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
-// Logika pemicu klik pertama untuk Smartlink dan memutar video
+// Logika pemicu klik pertama: Membuka Smartlink, menyembunyikan tombol merah, dan memutar video
 document.getElementById("video-wrapper").addEventListener("click", function(e) {
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
     
-    // Periksa apakah tombol play masih ada (artinya ini klik pertama pengguna)
-    if (playContainer && !playContainer.classList.contains("hidden")) {
+    // Periksa apakah tombol play masih terlihat di layar
+    if (playContainer && playContainer.style.display !== "none") {
         
-        // 1. Buka Smartlink Adsterra di TAB BARU (Aman & Lolos Anti-Fraud)
+        // 1. Buka Smartlink Adsterra di TAB BARU (Aman & Valid)
         window.open(smartlink, '_blank');
         
-        // 2. Sembunyikan lapisan tombol play tiruan
-        playContainer.classList.add("hidden");
+        // 2. PAKSA Sembunyikan tombol play menggunakan CSS murni (display: none)
+        playContainer.style.display = "none";
         
-        // 3. Kembalikan opasitas video menjadi terang (100%)
-        realVideo.classList.remove("opacity-70");
+        // 3. Kembalikan opasitas video menjadi terang penuh
+        realVideo.style.opacity = "1";
         
         // 4. Aktifkan tombol kontrol bawaan browser (play, pause, timeline)
         realVideo.setAttribute("controls", "true");
@@ -202,8 +202,6 @@ document.getElementById("video-wrapper").addEventListener("click", function(e) {
     }
 });
 </script>
-
-
   
 </body>
 </html>
