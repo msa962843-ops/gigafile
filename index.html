@@ -96,24 +96,26 @@
     <div class="menu-btn"><span></span></div>
   </header>
 
-<main class="flex-grow flex items-center justify-center p-4">
-    <!-- Kontak Pemutar Video Responsif Terkunci -->
-    <div class="relative max-w-sm w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
+<main class="flex-grow flex items-center justify-center p-4" style="display: flex; justify-content: center; align-items: center;">
+    
+    <!-- Kotak Pemutar Video (Ukuran dikunci maksimal lebar 340px agar pas di HP kecil) -->
+    <div id="video-wrapper" class="group" style="position: relative; width: 100%; max-width: 340px; aspect-ratio: 16 / 9; bg-color: #000000; background: #000; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
         
-        <!-- Video Utama (Thumbnail otomatis dari detik ke-1) -->
-        <video id="real-video" class="w-full h-full object-contain opacity-70 group-hover:scale-101 transition-transform duration-500" playsinline preload="metadata">
+        <!-- Video Utama -->
+        <video id="real-video" style="width: 100%; height: 100%; object-fit: contain; opacity: 0.7; transition: transform 0.5s;" playsinline preload="metadata">
             <source src="https://video.twimg.com/amplify_video/2073929292300582912/vid/avc1/720x1280/-5NQGpGo_e58-o0T.mp4?tag=28#t=1" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <!-- Tombol Play Terkunci Mati di Tengah-Tengah Video -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none" id="play-container">
-            <div class="w-14 h-14 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
-                <svg xmlns="http://w3.org" class="h-7 w-7 fill-current ml-0.5" viewBox="0 0 24 24">
+        <!-- Lapisan Tombol Play (DIKUNCI PASTI DI TENGAH VIDEO) -->
+        <div id="play-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; pointer-events: none;">
+            <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4); transition: all 0.3s;">
+                <svg xmlns="http://w3.org" style="width: 28px; height: 28px; fill: #ffffff; margin-left: 4px;" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
         </div>
+
     </div>
 </main>
 
