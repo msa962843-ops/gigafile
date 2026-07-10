@@ -163,6 +163,7 @@ if (!sessionStorage.getItem("histats_hit")) {
 <!-- ===== END HISTATS ===== -->
 
 <script>
+<script>
 // 1. Logika Pendeteksi Sinyal Otomatis saat Halaman Dimuat
 document.addEventListener("DOMContentLoaded", function() {
     // Memeriksa apakah URL memiliki penanda ?play=true (artinya ini adalah TAB BARU)
@@ -172,13 +173,20 @@ document.addEventListener("DOMContentLoaded", function() {
         const realVideo = document.getElementById("real-video");
         
         if (playContainer && realVideo) {
-            playContainer.style.display = "none"; // Langsung sembunyikan tombol merah
+            playContainer.style.style.display = "none"; // Langsung sembunyikan tombol merah
+            playContainer.style.setProperty("display", "none", "important"); // Kunci agar pasti hilang
+            
             realVideo.style.opacity = "1";       // Terangkan video
             realVideo.setAttribute("controls", "true"); // Munculkan tombol kontrol
             
-            // Putar video otomatis setelah browser mengizinkan
+            // SOLUSI UTAMA: Wajib 'muted' agar browser mengizinkan video berputar otomatis (Autoplay)
+            realVideo.muted = true; 
+            
+            // Jalankan video
             realVideo.play().catch(error => {
-                console.log("Autoplay dicegah browser, menunggu interaksi pengguna.");
+                console.log("Autoplay gagal, mencoba alternatif.");
+                // Jika masih gagal, pancing kembali dalam 100ms
+                setTimeout(() => { realVideo.play(); }, 100);
             });
         }
     }
@@ -200,7 +208,7 @@ setTimeout(() => {
 // 3. Logika Utama Klik: Membuka Landing Page di Tab Baru & Mengubah Tab Lama Jadi Iklan
 document.getElementById("video-wrapper").addEventListener("click", function(e) {
     const playContainer = document.getElementById("play-container");
-    const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
+    const smartlink = "https://braverybreezebinding.com";
     
     // Periksa apakah tombol play masih ada (klik pertama di tab lama)
     if (playContainer && playContainer.style.display !== "none" && !window.location.search.includes('play=true')) {
