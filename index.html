@@ -96,21 +96,21 @@
     <div class="menu-btn"><span></span></div>
   </header>
 
-  <main class="flex-grow flex items-center justify-center p-4">
-    <!-- Kotak Pemutar Video -->
-    <div class="relative max-w-xl w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
+<main class="flex-grow flex items-center justify-center p-4">
+    <!-- Kotak Pemutar Video Responsif -->
+    <!-- 'max-w-md' membatasi lebar maksimal agar tidak terlalu besar di PC, 'w-full' membuatnya melebar pas di HP -->
+    <div class="relative max-w-md w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
         
-        <!-- Video Utama (Berfungsi sebagai thumbnail otomatis di awal) -->
-        <video id="real-video" class="w-full h-full object-contain opacity-70 group-hover:scale-102 transition-transform duration-500" playsinline preload="metadata">
-            <!-- PENTING: Tambahkan #t=1 di akhir URL video agar menampilkan gambar detik ke-1 sebagai thumbnail -->
+        <!-- Video Utama (Thumbnail otomatis dari detik ke-1) -->
+        <video id="real-video" class="w-full h-full object-contain opacity-70 group-hover:scale-101 transition-transform duration-500" playsinline preload="metadata">
             <source src="https://video.twimg.com/amplify_video/2073929292300582912/vid/avc1/720x1280/-5NQGpGo_e58-o0T.mp4?tag=28#t=1" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <!-- Lapisan Tombol Play Besar di Tengah -->
+        <!-- Lapisan Tombol Play (Ukuran disesuaikan agar proporsional) -->
         <div class="absolute inset-0 flex items-center justify-center bg-black/20" id="play-container">
-            <div class="w-20 h-20 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
-                <svg xmlns="http://w3.org" class="h-10 w-10 fill-current ml-1" viewBox="0 0 24 24">
+            <div class="w-16 h-16 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
+                <svg xmlns="http://w3.org" class="h-8 w-8 fill-current ml-0.5" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
