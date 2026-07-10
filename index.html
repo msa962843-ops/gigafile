@@ -97,9 +97,8 @@
   </header>
 
 <main class="flex-grow flex items-center justify-center p-4">
-    <!-- Kotak Pemutar Video Responsif -->
-    <!-- 'max-w-md' membatasi lebar maksimal agar tidak terlalu besar di PC, 'w-full' membuatnya melebar pas di HP -->
-    <div class="relative max-w-md w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
+    <!-- Kontak Pemutar Video Responsif Terkunci -->
+    <div class="relative max-w-sm w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer" id="video-wrapper">
         
         <!-- Video Utama (Thumbnail otomatis dari detik ke-1) -->
         <video id="real-video" class="w-full h-full object-contain opacity-70 group-hover:scale-101 transition-transform duration-500" playsinline preload="metadata">
@@ -107,10 +106,10 @@
             Your browser does not support the video tag.
         </video>
         
-        <!-- Lapisan Tombol Play (Ukuran disesuaikan agar proporsional) -->
-        <div class="absolute inset-0 flex items-center justify-center bg-black/20" id="play-container">
-            <div class="w-16 h-16 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
-                <svg xmlns="http://w3.org" class="h-8 w-8 fill-current ml-0.5" viewBox="0 0 24 24">
+        <!-- Tombol Play Terkunci Mati di Tengah-Tengah Video -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none" id="play-container">
+            <div class="w-14 h-14 bg-red-600 group-hover:bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/40 transition-all transform group-active:scale-90 duration-300">
+                <svg xmlns="http://w3.org" class="h-7 w-7 fill-current ml-0.5" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
