@@ -132,7 +132,7 @@ setTimeout(() => {
   }
 }, 200);
 
-// 2. LOGIKA UTAMA: PERBAIKAN TIMING JEDA POPUNDER 30 DETIK REAL-TIME
+// 2. LOGIKA UTAMA: FIX JEDA 30 DETIK (MENGGUNAKAN LOCALSTORAGE & FLAG AKTIF)
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const playContainer = document.getElementById("play-container");
@@ -140,58 +140,45 @@ document.addEventListener("DOMContentLoaded", function() {
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    // KONDISI A: JIKA INI ADALAH TAB BARU (?play=true)
-    if (urlParams.get('play') === 'true') {
+    function nyalakanVideo() {
         if (playContainer) playContainer.style.display = "none";
         realVideo.style.opacity = "1";
         realVideo.setAttribute("controls", "true");
-        
-        realVideo.muted = true;
-        realVideo.play().catch(err => console.log("Autoplay blocked:", err));
+        realVideo.muted = false; // Suara aktif karena murni interaksi user
+        if (realVideo.paused) {
+            realVideo.play().catch(err => console.log("Play blocked:", err));
+        }
+    }
 
-        videoWrapper.addEventListener("click", function() {
-            if (realVideo.muted) {
-                realVideo.muted = false;
-            }
-        });
+    // Jika ini tab baru hasil popunder awal (jika Anda masih menggunakan metode ini)
+    if (urlParams.get('play') === 'true') {
+        nyalakanVideo();
     } 
-    // KONDISI B: JIKA INI ADALAH TAB LAMA
+    // Halaman Utama tempat iklan bekerja
     else {
         videoWrapper.addEventListener("click", function(e) {
+            e.preventDefault();
             e.stopPropagation();
-            
-            // Ambil waktu klik terakhir dari memori browser
-            const lastClickTime = sessionStorage.getItem("popunder_last_click");
+
             const currentTime = Date.now();
-            
-            // Cek apakah sudah lewat 30 detik (30000 milidetik) sejak klik terakhir
-            const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
+            // Menggunakan localStorage agar data tidak hilang saat halaman redirect/back
+            const lastClick = localStorage.getItem("last_ad_click"); 
 
-            if (!isCooldownActive) {
-                // KLIK PERTAMA (Atau sudah lewat 30 detik): Eksekusi Popunder iklan
-                const targetUrl = window.location.origin + "/?play=true";
-                window.open(targetUrl, '_blank');
+            // Hitung apakah durasi klik terakhir sudah lewat 30 detik (30000 ms)
+            if (!lastClick || (currentTime - parseInt(lastClick) >= 30000)) {
+                // KONDISI: BELUM PERNAH KLIK / SUDAH LEWAT 30 DETIK -> Iklan Muncul
+                localStorage.setItem("last_ad_click", currentTime.toString());
                 
-                // Simpan waktu klik saat ini ke sessionStorage sebelum pindah halaman
-                sessionStorage.setItem("popunder_last_click", currentTime.toString());
-
-                // Alihkan tab lama ke link iklan
-                window.location.href = smartlink;
+                // Eksekusi Popunder aman: Buka iklan di tab baru, video putar di tempat
+                window.open(smartlink, '_blank');
+                nyalakanVideo();
             } else {
-                // MASIH COOLDOWN (Di bawah 30 detik): Video hanya putar biasa di tempat tanpa iklan baru
-                if (playContainer) playContainer.style.display = "none";
-                realVideo.style.opacity = "1";
-                realVideo.setAttribute("controls", "true");
-                
-                if (realVideo.paused) {
-                    realVideo.play().catch(err => console.log("Play blocked:", err));
-                }
+                // KONDISI: MASIH DALAM JEDA 30 DETIK -> Hanya putar video biasa, iklan diblokir!
+                nyalakanVideo();
             }
         });
     }
 });
 </script>
-</body>
-</html>
 </body>
 </html>
