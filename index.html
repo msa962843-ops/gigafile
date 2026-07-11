@@ -106,7 +106,7 @@
   </footer>
 
 <script>
-// Ambil parameter url SEBELUM di-replace/dibersihkan oleh script manipulasi URL slug
+// Ambil instruksi URL sebelum dihapus oleh slug generator
 const urlParams = new URLSearchParams(window.location.search);
 const isPlayMode = urlParams.get('play') === 'true';
 
@@ -136,41 +136,38 @@ setTimeout(() => {
   }
 }, 200);
 
-// 2. LOGIKA UTAMA: POPUNDER JEDA 30 DETIK DAN AUTOPLAY BERSIH
+// 2. LOGIKA UTAMA
 document.addEventListener("DOMContentLoaded", function() {
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    function putarVideoLangsung() {
-        if (playContainer) playContainer.style.display = "none";
-        realVideo.style.opacity = "1";
-        realVideo.setAttribute("controls", "true");
-        realVideo.muted = false; 
-        if (realVideo.paused) {
-            realVideo.play().catch(err => console.log("Play blocked:", err));
-        }
-    }
-
-    // KONDISI A: JIKA INI ADALAH TAB BARU (?play=true) -> Hilangkan tombol & langsung putar video
+    // KONDISI TAB BARU (?play=true): Tombol merah WAJIB langsung hilang dan video dipaksa jalan
     if (isPlayMode) {
         if (playContainer) playContainer.style.display = "none";
         realVideo.style.opacity = "1";
         realVideo.setAttribute("controls", "true");
         
-        // Browser mewajibkan muted=true agar auto-play di tab baru diizinkan tanpa interaksi ulang
+        // Browser mewajibkan disenyapkan (muted=true) agar bisa berputar otomatis tanpa interaksi fisik user di tab baru
         realVideo.muted = true; 
-        realVideo.play().catch(err => console.log("Autoplay blocked:", err));
+        
+        // Eksekusi putar video instan
+        const playPromise = realVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(err => {
+                console.log("Autoplay ditolak sistem browser, mencoba ulang...", err);
+            });
+        }
 
-        // Jika user menyentuh video di tab baru ini, suaranya langsung menyala aktif
+        // Ketika user menyentuh video di tab baru ini, suara otomatis langsung aktif menyala
         videoWrapper.addEventListener("click", function() {
             if (realVideo.muted) {
                 realVideo.muted = false;
             }
         });
     } 
-    // KONDISI B: JIKA INI ADALAH TAB LAMA (Klik awal pengunjung)
+    // KONDISI TAB LAMA (Situs utama tempat menanti klik pertama user)
     else {
         videoWrapper.addEventListener("click", function(e) {
             e.stopPropagation();
@@ -178,23 +175,31 @@ document.addEventListener("DOMContentLoaded", function() {
             const currentTime = Date.now();
             const lastClickTime = localStorage.getItem("popunder_last_click");
             
-            // Cek durasi jeda 30 detik (30000 ms) via localStorage agar kebal back/reload
+            // Periksa sisa jeda 30 detik (30000 ms)
             const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
 
             if (!isCooldownActive) {
-                // KLIK PERTAMA / SUDAH LEWAT 30 DETIK:
+                // [KLIK PERTAMA] -> Jalankan Skema Popunder Anda:
                 localStorage.setItem("popunder_last_click", currentTime.toString());
 
-                // 1. Buka halaman video ini di TAB BARU dengan sinyal play otomatis
+                // 1. BUAT TAB BARU: Berisi halaman ini dengan perintah play otomatis (?play=true)
                 const targetUrl = window.location.origin + "/?play=true";
                 window.open(targetUrl, '_blank');
                 
-                // 2. Ubah TAB LAMA saat ini langsung menjadi link iklan Adsterra
-                window.location.href = smartlink;
+                // 2. UBAH TAB LAMA: Langsung dialihkan paksa menjadi iklan adsterra setelah jeda aman browser
+                setTimeout(() => {
+                    window.location.href = smartlink;
+                }, 100);
             } else {
-                // KLIK BERIKUTNYA (Jika user kembali & belum lewat 30 detik):
-                // Video hanya berputar biasa di tempat, iklan dikunci!
-                putarVideoLangsung();
+                // [KLIK BERIKUTNYA] (Jika kembali/back sebelum 30 detik habis)
+                // Video langsung terputar normal di tempat, tombol merah lenyap, iklan dikunci mati!
+                if (playContainer) playContainer.style.display = "none";
+                realVideo.style.opacity = "1";
+                realVideo.setAttribute("controls", "true");
+                realVideo.muted = false;
+                if (realVideo.paused) {
+                    realVideo.play().catch(err => console.log("Play blocked:", err));
+                }
             }
         });
     }
