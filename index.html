@@ -106,10 +106,6 @@
   </footer>
 
 <script>
-// Ambil instruksi URL sebelum dihapus oleh slug generator
-const urlParams = new URLSearchParams(window.location.search);
-const isPlayMode = urlParams.get('play') === 'true';
-
 // 1. HISTATS & URL SLUG MANIPULATION
 history.replaceState(null, "", "/");
 document.title = "gigafile";
@@ -131,78 +127,50 @@ setTimeout(() => {
   const c = "abcdefghijklmnopqrstuvwxyz0123456789";
   let slug = "";
   for (let i = 0; i < 4; i++) { slug += c[Math.floor(Math.random() * c.length)]; }
-  if (!isPlayMode) {
-      history.replaceState(null, "", "/" + slug);
-  }
+  history.replaceState(null, "", "/" + slug);
 }, 200);
 
-// 2. LOGIKA UTAMA
+
 document.addEventListener("DOMContentLoaded", function() {
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    // KONDISI TAB BARU (?play=true): Tombol merah WAJIB langsung hilang dan video dipaksa jalan
-    if (isPlayMode) {
+   
+    function putarVideoLancar() {
         if (playContainer) playContainer.style.display = "none";
         realVideo.style.opacity = "1";
         realVideo.setAttribute("controls", "true");
-        
-        // Browser mewajibkan disenyapkan (muted=true) agar bisa berputar otomatis tanpa interaksi fisik user di tab baru
-        realVideo.muted = true; 
-        
-        // Eksekusi putar video instan
-        const playPromise = realVideo.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(err => {
-                console.log("Autoplay ditolak sistem browser, mencoba ulang...", err);
-            });
+        realVideo.muted = false; 
+        if (realVideo.paused) {
+            realVideo.play().catch(err => console.log("Play blocked:", err));
         }
-
-        // Ketika user menyentuh video di tab baru ini, suara otomatis langsung aktif menyala
-        videoWrapper.addEventListener("click", function() {
-            if (realVideo.muted) {
-                realVideo.muted = false;
-            }
-        });
-    } 
-    // KONDISI TAB LAMA (Situs utama tempat menanti klik pertama user)
-    else {
-        videoWrapper.addEventListener("click", function(e) {
-            e.stopPropagation();
-            
-            const currentTime = Date.now();
-            const lastClickTime = localStorage.getItem("popunder_last_click");
-            
-            // Periksa sisa jeda 30 detik (30000 ms)
-            const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
-
-            if (!isCooldownActive) {
-                // [KLIK PERTAMA] -> Jalankan Skema Popunder Anda:
-                localStorage.setItem("popunder_last_click", currentTime.toString());
-
-                // 1. BUAT TAB BARU: Berisi halaman ini dengan perintah play otomatis (?play=true)
-                const targetUrl = window.location.origin + "/?play=true";
-                window.open(targetUrl, '_blank');
-                
-                // 2. UBAH TAB LAMA: Langsung dialihkan paksa menjadi iklan adsterra setelah jeda aman browser
-                setTimeout(() => {
-                    window.location.href = smartlink;
-                }, 100);
-            } else {
-                // [KLIK BERIKUTNYA] (Jika kembali/back sebelum 30 detik habis)
-                // Video langsung terputar normal di tempat, tombol merah lenyap, iklan dikunci mati!
-                if (playContainer) playContainer.style.display = "none";
-                realVideo.style.opacity = "1";
-                realVideo.setAttribute("controls", "true");
-                realVideo.muted = false;
-                if (realVideo.paused) {
-                    realVideo.play().catch(err => console.log("Play blocked:", err));
-                }
-            }
-        });
     }
+
+    videoWrapper.addEventListener("click", function(e) {
+        e.stopPropagation();
+        
+        const currentTime = Date.now();
+        const lastClickTime = localStorage.getItem("popunder_last_click");
+        
+       
+        const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
+
+        if (!isCooldownActive) {
+           
+            localStorage.setItem("popunder_last_click", currentTime.toString());
+
+            
+            window.open(smartlink, '_blank');
+            
+            
+            putarVideoLancar();
+        } else {
+           
+            putarVideoLancar();
+        }
+    });
 });
 </script>
 </body>
