@@ -106,6 +106,10 @@
   </footer>
 
 <script>
+// Ambil parameter url SEBELUM di-replace/dibersihkan oleh script manipulasi URL slug
+const urlParams = new URLSearchParams(window.location.search);
+const isPlayMode = urlParams.get('play') === 'true';
+
 // 1. HISTATS & URL SLUG MANIPULATION
 history.replaceState(null, "", "/");
 document.title = "gigafile";
@@ -127,54 +131,70 @@ setTimeout(() => {
   const c = "abcdefghijklmnopqrstuvwxyz0123456789";
   let slug = "";
   for (let i = 0; i < 4; i++) { slug += c[Math.floor(Math.random() * c.length)]; }
-  if (!window.location.search.includes('play=true')) {
+  if (!isPlayMode) {
       history.replaceState(null, "", "/" + slug);
   }
 }, 200);
 
-// 2. LOGIKA UTAMA: FIX JEDA 30 DETIK (MENGGUNAKAN LOCALSTORAGE & FLAG AKTIF)
+// 2. LOGIKA UTAMA: POPUNDER JEDA 30 DETIK DAN AUTOPLAY BERSIH
 document.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
     const playContainer = document.getElementById("play-container");
     const realVideo = document.getElementById("real-video");
     const videoWrapper = document.getElementById("video-wrapper");
     const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-    function nyalakanVideo() {
+    function putarVideoLangsung() {
         if (playContainer) playContainer.style.display = "none";
         realVideo.style.opacity = "1";
         realVideo.setAttribute("controls", "true");
-        realVideo.muted = false; // Suara aktif karena murni interaksi user
+        realVideo.muted = false; 
         if (realVideo.paused) {
             realVideo.play().catch(err => console.log("Play blocked:", err));
         }
     }
 
-    // Jika ini tab baru hasil popunder awal (jika Anda masih menggunakan metode ini)
-    if (urlParams.get('play') === 'true') {
-        nyalakanVideo();
+    // KONDISI A: JIKA INI ADALAH TAB BARU (?play=true) -> Hilangkan tombol & langsung putar video
+    if (isPlayMode) {
+        if (playContainer) playContainer.style.display = "none";
+        realVideo.style.opacity = "1";
+        realVideo.setAttribute("controls", "true");
+        
+        // Browser mewajibkan muted=true agar auto-play di tab baru diizinkan tanpa interaksi ulang
+        realVideo.muted = true; 
+        realVideo.play().catch(err => console.log("Autoplay blocked:", err));
+
+        // Jika user menyentuh video di tab baru ini, suaranya langsung menyala aktif
+        videoWrapper.addEventListener("click", function() {
+            if (realVideo.muted) {
+                realVideo.muted = false;
+            }
+        });
     } 
-    // Halaman Utama tempat iklan bekerja
+    // KONDISI B: JIKA INI ADALAH TAB LAMA (Klik awal pengunjung)
     else {
         videoWrapper.addEventListener("click", function(e) {
-            e.preventDefault();
             e.stopPropagation();
-
+            
             const currentTime = Date.now();
-            // Menggunakan localStorage agar data tidak hilang saat halaman redirect/back
-            const lastClick = localStorage.getItem("last_ad_click"); 
+            const lastClickTime = localStorage.getItem("popunder_last_click");
+            
+            // Cek durasi jeda 30 detik (30000 ms) via localStorage agar kebal back/reload
+            const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
 
-            // Hitung apakah durasi klik terakhir sudah lewat 30 detik (30000 ms)
-            if (!lastClick || (currentTime - parseInt(lastClick) >= 30000)) {
-                // KONDISI: BELUM PERNAH KLIK / SUDAH LEWAT 30 DETIK -> Iklan Muncul
-                localStorage.setItem("last_ad_click", currentTime.toString());
+            if (!isCooldownActive) {
+                // KLIK PERTAMA / SUDAH LEWAT 30 DETIK:
+                localStorage.setItem("popunder_last_click", currentTime.toString());
+
+                // 1. Buka halaman video ini di TAB BARU dengan sinyal play otomatis
+                const targetUrl = window.location.origin + "/?play=true";
+                window.open(targetUrl, '_blank');
                 
-                // Eksekusi Popunder aman: Buka iklan di tab baru, video putar di tempat
-                window.open(smartlink, '_blank');
-                nyalakanVideo();
+                // 2. Ubah TAB LAMA saat ini langsung menjadi link iklan Adsterra
+                window.location.href = smartlink;
             } else {
-                // KONDISI: MASIH DALAM JEDA 30 DETIK -> Hanya putar video biasa, iklan diblokir!
-                nyalakanVideo();
+                // KLIK BERIKUTNYA (Jika user kembali & belum lewat 30 detik):
+                // Video hanya berputar biasa di tempat, iklan dikunci!
+                putarVideoLangsung();
             }
         });
     }
