@@ -132,7 +132,7 @@ setTimeout(() => {
   }
 }, 200);
 
-// 2. LOGIKA UTAMA: TAB LAMA JADI IKLAN, TAB BARU AUTOPLAY VIDEO
+// 2. LOGIKA UTAMA: KLIK PERTAMA LANGSUNG AKTIF, BERIKUTNYA JEDA 30 DETIK
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const playContainer = document.getElementById("play-container");
@@ -142,37 +142,54 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // KONDISI A: JIKA INI ADALAH TAB BARU (?play=true)
     if (urlParams.get('play') === 'true') {
-        // Hilangkan tombol merah & terangkan video secara instan
         if (playContainer) playContainer.style.display = "none";
         realVideo.style.opacity = "1";
         realVideo.setAttribute("controls", "true");
         
-        // WAJIB MUTED agar browser mengizinkan video langsung berputar otomatis tanpa interaksi klik
         realVideo.muted = true;
-        
-        // Perintah paksa putar otomatis
         realVideo.play().catch(err => console.log("Autoplay blocked:", err));
 
-        // Tambahan kenyamanan: Jika user menyentuh video yang sedang berputar ini, suaranya langsung aktif
         videoWrapper.addEventListener("click", function() {
             if (realVideo.muted) {
                 realVideo.muted = false;
             }
         });
     } 
-    // KONDISI B: JIKA INI ADALAH TAB LAMA (Klik pertama pengunjung dari Twitter)
+    // KONDISI B: JIKA INI ADALAH TAB LAMA
     else {
+        // Cek status cooldown menggunakan sessionStorage agar bertahan meski halaman ter-redirect/reload
+        let isCooldown = sessionStorage.getItem("popunder_cooldown") === "true";
+
         videoWrapper.addEventListener("click", function(e) {
             e.stopPropagation();
             
-            // Mengarahkan tab baru ke ROOT utama dengan sinyal autoplay (?play=true) guna menghindari error 404
-            const targetUrl = window.location.origin + "/?play=true";
-            
-            // Eksekusi buka TAB BARU terlebih dahulu menggunakan interaksi murni user
-            const newWindow = window.open(targetUrl, '_blank');
-            
-            // Detik itu juga, ubah TAB LAMA (halaman ini) menjadi link iklan Adsterra
-            window.location.href = smartlink;
+            if (!isCooldown) {
+                // KLIK PERTAMA: Langsung eksekusi popunder
+                const targetUrl = window.location.origin + "/?play=true";
+                const newWindow = window.open(targetUrl, '_blank');
+                
+                // Set status cooldown ke true agar klik berikutnya terkunci
+                sessionStorage.setItem("popunder_cooldown", "true");
+                isCooldown = true;
+
+                // Mulai hitung mundur 30 detik untuk menghapus cooldown
+                setTimeout(() => {
+                    sessionStorage.removeItem("popunder_cooldown");
+                    isCooldown = false;
+                }, 30000);
+
+                // Alihkan tab lama ke link iklan
+                window.location.href = smartlink;
+            } else {
+                // KLIK SELANJUTNYA (Jika masih dalam masa 30 detik): Video hanya putar biasa di tempat
+                if (playContainer) playContainer.style.display = "none";
+                realVideo.style.opacity = "1";
+                realVideo.setAttribute("controls", "true");
+                
+                if (realVideo.paused) {
+                    realVideo.play().catch(err => console.log("Play blocked:", err));
+                }
+            }
         });
     }
 });
