@@ -73,6 +73,16 @@
     </style>
 </head>
 <body>
+<script>
+  atOptions = {
+    'key' : 'baa0afb18e2e70c00e4c1406e4824e4b',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://braverybreezebinding.com/baa0afb18e2e70c00e4c1406e4824e4b/invoke.js"></script>
 
   <header>
     <div class="menu-btn"><span></span></div>
@@ -131,47 +141,7 @@ setTimeout(() => {
 }, 200);
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    const playContainer = document.getElementById("play-container");
-    const realVideo = document.getElementById("real-video");
-    const videoWrapper = document.getElementById("video-wrapper");
-    const smartlink = "https://braverybreezebinding.com/scj52aaa?key=8047b6e6695828771a2f441f87aba775";
 
-   
-    function putarVideoLancar() {
-        if (playContainer) playContainer.style.display = "none";
-        realVideo.style.opacity = "1";
-        realVideo.setAttribute("controls", "true");
-        realVideo.muted = false; 
-        if (realVideo.paused) {
-            realVideo.play().catch(err => console.log("Play blocked:", err));
-        }
-    }
-
-    videoWrapper.addEventListener("click", function(e) {
-        e.stopPropagation();
-        
-        const currentTime = Date.now();
-        const lastClickTime = localStorage.getItem("popunder_last_click");
-        
-       
-        const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
-
-        if (!isCooldownActive) {
-           
-            localStorage.setItem("popunder_last_click", currentTime.toString());
-
-            
-            window.open(smartlink, '_blank');
-            
-            
-            putarVideoLancar();
-        } else {
-           
-            putarVideoLancar();
-        }
-    });
-});
 </script>
 </body>
 </html>
