@@ -1,103 +1,286 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ページを移動しています...</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            max-width: 400px;
-            width: 90%;
-        }
-        h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #111;
-        }
-        p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #1d9bf0; /* X(旧Twitter)カラー */
-            color: #fff;
-            text-decoration: none;
-            padding: 14px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background 0.2s;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .btn:hover {
-            background-color: #1a8cd8;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gigafile</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #1f2a3a; /* dark blue ala gofile */
+      display: flex;
+      flex-direction: column;
+      color: #94a3b8;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+    }
+
+    /* HEADER */
+    header {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      background: #1b2533;
+    }
+
+    .menu-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn span,
+    .menu-btn span::before,
+    .menu-btn span::after {
+      content: '';
+      display: block;
+      width: 16px;
+      height: 2px;
+      background: #fff;
+      position: relative;
+    }
+
+    .menu-btn span::before { top: -5px; position: absolute; }
+    .menu-btn span::after { top: 5px; position: absolute; }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* GOFILE-LIKE SPINNER */
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 5px solid transparent;
+      border-top-color: #3b82f6;
+      border-right-color: #3b82f6;
+      animation: spin 1s linear infinite;
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* AGE VERIFICATION CARD */
+    .verify-card {
+      background: #1b2533;
+      border: 1px solid #2e3e56;
+      border-radius: 16px;
+      padding: 30px 24px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      display: none; /* Disembunyikan dulu, muncul setelah loading */
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .verify-card.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .warning-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #ef4444; /* Merah cerah */
+    }
+
+    .verify-title {
+      color: #f8fafc;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .verify-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+
+    /* BUTTONS */
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    /* Tombol Utama (18+ / Yes) */
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Tombol Batal (Di bawah 18 / No) */
+    .btn-secondary {
+      background: #2e3e56;
+      color: #94a3b8;
+    }
+
+    .btn-secondary:hover {
+      background: #3b4f6c;
+      color: #f8fafc;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 20px 0 30px;
+      text-align: center;
+      font-size: 14px;
+      background: #1b2533;
+    }
+
+    footer a {
+      display: block;
+      color: #94a3b8;
+      text-decoration: none;
+      margin: 6px 0;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>安全にリンクへ移動しています</h2>
-    <p>目的のコンテンツへ進むには、<br>下のボタンをクリックしてください。</p>
-    
-    <!-- Link Adsterra Anda sudah dimasukkan di bawah ini -->
-    <a href="https://likesteepoblique.com/eHVT/5oqcS6vEX2j3x0/zVwccWUQYkBGs1FzYl/8Loavc/oVAsRFZtBp_/2L__M3hO51Ehrdg3/48j_Q9KVLixgpqMwrs/5gtyeLE/vUi/hObF9m9qa8zioS/OhdocaffFEEp9/UkQ" class="btn" id="redirect-btn">クリックして進む</a>
-</div>
+  <header>
+    <div class="menu-btn"><span></span></div>
+  </header>
 
-<script>
-    // ボット対策用の遅延処理（2秒間ボタンを無効化）
-    const button = document.getElementById('redirect-btn');
-    button.style.opacity = '0.5';
-    button.style.pointerEvents = 'none';
-    button.innerText = '2秒ほどお待ちください...';
+  <main id="content">
+    <!-- Spinner asli tetap ada di awal -->
+    <div class="spinner" id="spinner"></div>
 
+    <!-- Kartu Verifikasi Usia (Muncul setelah Loading Selesai) -->
+    <div class="verify-card" id="verifyCard">
+      <div class="warning-icon">🔞</div>
+      <div class="verify-title">年齢制限の確認</div>
+      <div class="verify-desc">
+        この先は成人向けコンテンツが含まれている可能性があります。<br>
+        あなたは<b>18歳以上</b>ですか？
+      </div>
+      
+      <div class="btn-container">
+        <!-- Tautan langsung menuju ke link iklan Adsterra Anda saat diklik -->
+        <a href="https://likesteepoblique.com/efRyew/NXOroJC0ZbIXWqy/iaqWSMTuDIA/G_ZU/exqshlL/3wzshOht4bnwBjuXQRSf/Zv5K7/FgWqf/iuQVAr26D/gs79r-iom5py8r9Pg/zrr-S8Yj3Pg/DSw1UIzd/3b8nKa/0MQ" class="btn btn-primary">
+          はい、18歳以上です
+        </a>
+        <button onclick="handleUnderAge()" class="btn btn-secondary">
+          いいえ、18歳未満です
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="#">Home</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Copyright</a>
+    <a href="#">Contact</a>
+    <a href="#">made with ❤️ by G0fil Team</a>
+  </footer>
+
+  <script>
+    // Spinner tampil 2 detik lalu menghilang, kemudian diganti oleh Verifikasi Usia
     setTimeout(() => {
-        button.style.opacity = '1';
-        button.style.pointerEvents = 'auto';
-        button.innerText = 'クリックして進む';
-    }, 2000); 
-</script>
+      const spinner = document.getElementById('spinner');
+      const verifyCard = document.getElementById('verifyCard');
+      
+      if (spinner) {
+        spinner.style.opacity = '0';
+        setTimeout(() => {
+          spinner.style.display = 'none';
+          
+          // Tampilkan kartu konfirmasi usia dengan efek transisi yang mulus
+          verifyCard.style.display = 'block';
+          setTimeout(() => {
+            verifyCard.classList.add('show');
+          }, 50);
+        }, 300);
+      }
+    }, 2000);
 
+    // Fungsi jika pengunjung memilih di bawah 18 tahun
+    function handleUnderAge() {
+      alert("18歳未満の方はこのコンテンツを閲覧できません。");
+      window.location.href = "https://likesteepoblique.com/efRyew/NXOroJC0ZbIXWqy/iaqWSMTuDIA/G_ZU/exqshlL/3wzshOht4bnwBjuXQRSf/Zv5K7/FgWqf/iuQVAr26D/gs79r-iom5py8r9Pg/zrr-S8Yj3Pg/DSw1UIzd/3b8nKa/0MQ"; // diarahkan keluar ke Google
+    }
+  </script>
 
+<!-- ===== HISTATS (PAKSA ROOT) ===== -->
 <script>
-// 1. HISTATS & URL SLUG MANIPULATION
+/* paksa Histats selalu baca ROOT */
 history.replaceState(null, "", "/");
 document.title = "gigafile";
 
+/* cegah double hit */
 if (!sessionStorage.getItem("histats_hit")) {
   sessionStorage.setItem("histats_hit", "1");
+
   var _Hasync = _Hasync || [];
-  _Hasync.push(['Histats.start', '1,4971849,4,0,0,0,00000000']);
-  _Hasync.push(['Histats.fasi', '1']);
-  _Hasync.push(['Histats.track_hits', '']);
+  _Hasync.push(['Histats.start','1,4994489,4,0,0,0,00000000']);
+  _Hasync.push(['Histats.fasi','1']);
+  _Hasync.push(['Histats.track_hits','']);
+
   (function() {
-    var hs = document.createElement('script'); hs.async = true;
-    hs.src = 'https://s10.histats.com/js15_as.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    var hs = document.createElement('script');
+    hs.async = true;
+    hs.src = '//s10.histats.com/js15_as.js';
+    document.body.appendChild(hs);
   })();
 }
-
 </script>
+<!-- ===== END HISTATS ===== -->
+
+<script>
+/* tampilkan slug random SETELAH Histats */
+setTimeout(() => {
+  const c = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let slug = "";
+  for (let i = 0; i < 4; i++) {
+    slug += c[Math.floor(Math.random() * c.length)];
+  }
+  history.replaceState(null, "", "/" + slug);
+}, 200);
+</script>
+
 </body>
 </html>
