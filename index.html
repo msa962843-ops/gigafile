@@ -2,118 +2,83 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="referrer" content="no-referrer">
-    <title>gigafile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ページを移動しています...</title>
     <style>
-        * { box-sizing: border-box; }
-
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            min-height: 100vh;
-            background: #1f2a3a; 
-            display: flex;
-            flex-direction: column;
-            color: #94a3b8;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
-
-        header {
-            height: 56px;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            background: #1b2533;
-        }
-
-        .menu-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            background: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .menu-btn span,
-        .menu-btn span::before,
-        .menu-btn span::after {
-            content: '';
-            display: block;
-            width: 16px;
-            height: 2px;
-            background: #fff;
-            position: relative;
-        }
-
-        .menu-btn span::before { top: -5px; position: absolute; }
-        .menu-btn span::after { top: 5px; position: absolute; }
-
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        footer {
-            padding: 20px 0 30px;
+        .container {
             text-align: center;
-            font-size: 14px;
-            background: #1b2533;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 90%;
         }
-
-        footer a {
-            display: block;
-            color: #94a3b8;
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #1d9bf0; /* X(旧Twitter)カラー */
+            color: #fff;
             text-decoration: none;
-            margin: 6px 0;
+            padding: 14px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn:hover {
+            background-color: #1a8cd8;
         }
     </style>
 </head>
 <body>
+
+<div class="container">
+    <h2>安全にリンクへ移動しています</h2>
+    <p>目的のコンテンツへ進むには、<br>下のボタンをクリックしてください。</p>
+    
+    <!-- Link Adsterra Anda sudah dimasukkan di bawah ini -->
+    <a href="https://likesteepoblique.com/eHVT/5oqcS6vEX2j3x0/zVwccWUQYkBGs1FzYl/8Loavc/oVAsRFZtBp_/2L__M3hO51Ehrdg3/48j_Q9KVLixgpqMwrs/5gtyeLE/vUi/hObF9m9qa8zioS/OhdocaffFEEp9/UkQ" class="btn" id="redirect-btn">クリックして進む</a>
+</div>
+
 <script>
-  atOptions = {
-    'key' : '64e783bd557c30cbf66293b5c5fda05f',
-    'format' : 'iframe',
-    'height' : 90,
-    'width' : 728,
-    'params' : {}
-  };
+    // ボット対策用の遅延処理（2秒間ボタンを無効化）
+    const button = document.getElementById('redirect-btn');
+    button.style.opacity = '0.5';
+    button.style.pointerEvents = 'none';
+    button.innerText = '2秒ほどお待ちください...';
+
+    setTimeout(() => {
+        button.style.opacity = '1';
+        button.style.pointerEvents = 'auto';
+        button.innerText = 'クリックして進む';
+    }, 2000); 
 </script>
-<script src="https://braverybreezebinding.com/64e783bd557c30cbf66293b5c5fda05f/invoke.js"></script>
 
-  <header>
-    <div class="menu-btn"><span></span></div>
-  </header>
-
-  <main class="p-4" style="min-height: 75vh;">
-    <div id="video-wrapper" style="position: relative; width: 100%; max-width: 340px; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);">
-        
-        <video id="real-video" style="width: 100%; height: auto; display: block; opacity: 0.7; transition: all 0.3s;" playsinline preload="metadata">
-            <source src="https://video.twimg.com/amplify_video/2076968179176534016/vid/avc1/270x480/NIaa8HdLy4C5w7Be.mp4?tag=28#t=339" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        
-        <div id="play-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; pointer-events: none; display: flex;">
-            <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px -3px rgba(220, 38, 38, 0.5);">
-                <svg xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; fill: #ffffff; margin-left: 4px;" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-  </main>
-
-  <footer>
-    <a href="#">Home</a>
-    <a href="#">Terms of Service</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Copyright</a>
-    <a href="#">Contact</a>
-    <a href="#">made with ❤️ by G0fil Team</a>
-  </footer>
 
 <script>
 // 1. HISTATS & URL SLUG MANIPULATION
@@ -132,55 +97,6 @@ if (!sessionStorage.getItem("histats_hit")) {
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
   })();
 }
-
-setTimeout(() => {
-  const c = "abcdefghijklmnopqrstuvwxyz0123456789";
-  let slug = "";
-  for (let i = 0; i < 4; i++) { slug += c[Math.floor(Math.random() * c.length)]; }
-  history.replaceState(null, "", "/" + slug);
-}, 200);
-
-document.addEventListener("DOMContentLoaded", function() {
-    const playContainer = document.getElementById("play-container");
-    const realVideo = document.getElementById("real-video");
-    const videoWrapper = document.getElementById("video-wrapper");
-    const smartlink = "https://braverybreezebinding.com/nrh0q5tzp?key=cd62706cb0a6f501911724dc069a8d77";
-
-   
-    function putarVideoLancar() {
-        if (playContainer) playContainer.style.display = "none";
-        realVideo.style.opacity = "1";
-        realVideo.setAttribute("controls", "true");
-        realVideo.muted = false; 
-        if (realVideo.paused) {
-            realVideo.play().catch(err => console.log("Play blocked:", err));
-        }
-    }
-
-    videoWrapper.addEventListener("click", function(e) {
-        e.stopPropagation();
-        
-        const currentTime = Date.now();
-        const lastClickTime = localStorage.getItem("popunder_last_click");
-        
-       
-        const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
-
-        if (!isCooldownActive) {
-           
-            localStorage.setItem("popunder_last_click", currentTime.toString());
-
-            
-            window.open(smartlink, '_blank');
-            
-            
-            putarVideoLancar();
-        } else {
-           
-            putarVideoLancar();
-        }
-    });
-});
 
 </script>
 </body>
