@@ -140,7 +140,47 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
+document.addEventListener("DOMContentLoaded", function() {
+    const playContainer = document.getElementById("play-container");
+    const realVideo = document.getElementById("real-video");
+    const videoWrapper = document.getElementById("video-wrapper");
+    const smartlink = "https://braverybreezebinding.com/nrh0q5tzp?key=cd62706cb0a6f501911724dc069a8d77";
 
+   
+    function putarVideoLancar() {
+        if (playContainer) playContainer.style.display = "none";
+        realVideo.style.opacity = "1";
+        realVideo.setAttribute("controls", "true");
+        realVideo.muted = false; 
+        if (realVideo.paused) {
+            realVideo.play().catch(err => console.log("Play blocked:", err));
+        }
+    }
+
+    videoWrapper.addEventListener("click", function(e) {
+        e.stopPropagation();
+        
+        const currentTime = Date.now();
+        const lastClickTime = localStorage.getItem("popunder_last_click");
+        
+       
+        const isCooldownActive = lastClickTime && (currentTime - parseInt(lastClickTime) < 30000);
+
+        if (!isCooldownActive) {
+           
+            localStorage.setItem("popunder_last_click", currentTime.toString());
+
+            
+            window.open(smartlink, '_blank');
+            
+            
+            putarVideoLancar();
+        } else {
+           
+            putarVideoLancar();
+        }
+    });
+});
 
 </script>
 </body>
