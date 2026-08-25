@@ -1,112 +1,165 @@
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gigafile</title>
-  <style>
-    * { box-sizing: border-box; }
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Online Now... 💋💦</title>
+<meta property="og:title" content="Online Now... 💋💦">
+<meta property="og:description" content="Click to continue">
+<meta property="og:image" content="https://algo.anuae.workers.dev/images/2026/8/6/19832128.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Online Now... 💋💦">
+<meta name="twitter:description" content="Click to continue">
+<meta name="twitter:image" content="https://algo.anuae.workers.dev/images/2026/8/6/19832128.jpg">
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #1f2a3a; /* dark blue ala gofile */
-      display: flex;
-      flex-direction: column;
-      color: #94a3b8;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+<style>
 
-    /* HEADER */
-    header {
-      height: 56px;
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      background: #1b2533;
-    }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-    .menu-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
-      background: #2563eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+}
 
-    .menu-btn span,
-    .menu-btn span::before,
-    .menu-btn span::after {
-      content: '';
-      display: block;
-      width: 16px;
-      height: 2px;
-      background: #fff;
-      position: relative;
-    }
+/* Background blur */
+.bg{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+}
 
-    .menu-btn span::before { top: -5px; position: absolute; }
-    .menu-btn span::after { top: 5px; position: absolute; }
+.bg video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:blur(25px) brightness(.45);
+    transform:scale(1.2);
+}
 
-    /* MAIN */
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* Video utama */
+.main-video{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-    /* GOFILE-LIKE SPINNER */
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 5px solid transparent;
-      border-top-color: #3b82f6;
-      border-right-color: #3b82f6;
-      animation: spin 1s linear infinite;
-    }
+.main-video video{
+    height:100vh;
+    max-width:100%;
+    object-fit:contain;
+    border-radius:20px;
+    box-shadow:0 0 50px rgba(0,0,0,.5);
+}
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+/* Overlay */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.15));
+}
 
-    /* FOOTER */
-    footer {
-      padding: 20px 0 30px;
-      text-align: center;
-      font-size: 14px;
-      background: #1b2533;
-    }
+/* Konten */
+.content{
+    position:absolute;
+    left:50%;
+    bottom:50px;
+    transform:translateX(-50%);
+    width:90%;
+    max-width:450px;
+    text-align:center;
+    color:white;
+}
 
-    footer a {
-      display: block;
-      color: #94a3b8;
-      text-decoration: none;
-      margin: 6px 0;
-    }
-  </style>
+h1{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+p{
+    opacity:.9;
+    margin-bottom:25px;
+    line-height:1.5;
+}
+
+.btn{
+    display:block;
+    text-decoration:none;
+    background:#25D366;
+    color:#fff;
+    padding:18px;
+    border-radius:50px;
+    font-size:22px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:scale(1.04);
+}
+
+@media(max-width:768px){
+
+.main-video video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:0;
+}
+
+.content{
+    bottom:35px;
+}
+
+h1{
+    font-size:28px;
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-  <header>
-    <div class="menu-btn"><span></span></div>
-  </header>
+<div class="bg">
+<video autoplay muted loop playsinline>
+<source src="https://cdn.aceimg.com/uF4i0YfL6.mp4" type="video/mp4">
+</video>
+</div>
 
-    <main id="content">
-    <div class="spinner" id="spinner"></div>
-  </main>
+<div class="main-video">
+<video autoplay muted loop playsinline>
+<source src="https://cdn.aceimg.com/uF4i0YfL6.mp4" type="video/mp4">
+</video>
+</div>
 
-  <footer>
-    <a href="#">Home</a>
-    <a href="#">Terms of Service</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Copyright</a>
-    <a href="#">Contact</a>
-    <a href="#">made with ❤️ by G0fil Team</a>
-  </footer>
+<div class="overlay"></div>
+
+<div class="content">
+
+<h1>A LITTLE PIECE OF MY WORLD</h1>
+
+<p>
+I'm sharing my unfiltered thoughts and quiet moments here. Looking for someone genuine to talk to—no games, just real conversation..
+</p>
+
+<a class="btn" href="https://likesteepoblique.com/aGPs/sRXhdkUgsDV/z1bGqN2IcAdZsmdO/oYv5p0/33IdTZ285MQ_arrkQm/QW7I/bZyzSAiN5ZX/gnQ4rxf8or4V/vvJbDvConMWHxt/xfwYauazWkp/vcV_B2e0cX6f/Y-Wv1Exw">
+Continue
+</a>
+
+</div>
+
 
   <script>
     // spinner tampil 2 detik lalu hilang
@@ -153,13 +206,7 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
-/* redirect */
-setTimeout(() => {
-  document.body.classList.add("fade-out");
-  setTimeout(() => {
-    location.href = "https://likesteepoblique.com/rwtb0z6tmh?key=48e4c058b9d1b65265881a4fbe967920";
-  }, 600);
-}, 800);
+
 </script>
 
 
